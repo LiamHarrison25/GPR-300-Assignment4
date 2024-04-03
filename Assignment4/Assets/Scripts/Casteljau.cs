@@ -25,6 +25,8 @@ public class Casteljau : MonoBehaviour
     [SerializeField] private int curvePrecision = 100;
 
     [SerializeField] private bool drawGizmosEnabled = false;
+    [SerializeField] private int stepThroughAmount = 1;
+    [SerializeField] private bool enableStepThrough = false;
     
    
     private Vector3 [] curvePointsArray;
@@ -37,6 +39,7 @@ public class Casteljau : MonoBehaviour
     {
         curvePointsArray = new Vector3[curvePrecision];
         drawGizmosEnabled = true;
+        
     }
 
 
@@ -68,24 +71,48 @@ public class Casteljau : MonoBehaviour
 
     private void Update()
     {
-        CalculateCurve();
-       //Step();
+        if (stepThroughAmount > curvePrecision || stepThroughAmount < 0)
+        {
+            Debug.LogError("Please make sure that stepThroughAmount is a valid value");
+        }
+        
+        if (enableStepThrough)
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Step();
+            }
+        }
+        else
+        {
+            CalculateCurve();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            enableStepThrough = !enableStepThrough;
+        }
+       
     }
 
     private void Start()
     {
-        theStep = 0;
+        theStep = 1.0f / curvePrecision;
         theIndex = 0;
     }
 
     private void Step()
     {
-        if (theIndex <= 100)
+        if (theIndex < curvePrecision)
         {
-            theStep = 1.0f / curvePrecision;
-            CalculatePoint(T, theIndex);
-            T += theStep;
-            theIndex++;
+            int i;
+            //while(i )
+            //for (theIndex; i < stepThroughAmount; i++)
+            //{
+                Debug.Log("step " + theIndex);
+                CalculatePoint(T, theIndex);
+                T += theStep;
+            //}
         }
         else
         {
