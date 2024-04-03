@@ -17,6 +17,9 @@ public class Casteljau : MonoBehaviour
     [SerializeField] private Transform E;
     [SerializeField] private Transform P;
     
+    //TODO: Make a way to add points and have C1 continuous
+    //TODO: Rotate the object to face tangent to the spline
+    //TODO: Animate an object to move along the spline by changing the T value
 
     [SerializeField] private float T = 0f;
     [SerializeField] private int curvePrecision = 100;

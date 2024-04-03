@@ -53,8 +53,15 @@ public class Bernstein : MonoBehaviour
         P1Vector = p1.position - P.position;
         P2Vector = p2.position - P.position;
         P3Vector = p3.position - P.position;
-        
-        
+
+        Vector3 p0Equation = p0.position * (-(Mathf.Pow(t, 3)) + 3 * Mathf.Pow(t, 2) - 3 * t + 1);
+        Vector3 p1Equation = p1.position * (3 * Mathf.Pow(t, 3) - 6 * Mathf.Pow(t, 2) + 3 * t);
+        Vector3 p2Equation = p2.position * (-3 * Mathf.Pow(t, 3) + 3 * Mathf.Pow(t, 2) );
+        Vector3 p3Equation = p3.position * (Mathf.Pow(t, 3));
+        P.position = p0Equation + p1Equation + p2Equation + p3Equation;
+
+        curvePointsArray[index] = P.position;
+
     }
     
     private void OnDrawGizmos()
