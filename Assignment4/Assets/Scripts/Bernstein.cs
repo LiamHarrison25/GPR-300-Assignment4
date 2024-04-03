@@ -1,23 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Casteljau : MonoBehaviour
+public class Bernstein : MonoBehaviour
 {
     [SerializeField] private Transform p0;
     [SerializeField] private Transform p1;
     [SerializeField] private Transform p2;
     [SerializeField] private Transform p3;
-    [SerializeField] private Transform A;
-    [SerializeField] private Transform B;
-    [SerializeField] private Transform C;
-    [SerializeField] private Transform D;
-    [SerializeField] private Transform E;
     [SerializeField] private Transform P;
+    private Vector3 PoVector;
+    private Vector3 P1Vector;
+    private Vector3 P2Vector;
+    private Vector3 P3Vector;
     
-
     [SerializeField] private float T = 0f;
     [SerializeField] private int curvePrecision = 100;
 
@@ -26,30 +22,12 @@ public class Casteljau : MonoBehaviour
    
     private Vector3 [] curvePointsArray;
     
-    //For stepping through making the curve
-    private float theStep;
-    private int theIndex;
-
     private void Awake()
     {
         curvePointsArray = new Vector3[curvePrecision];
         drawGizmosEnabled = true;
     }
-
-
-    private void CalculatePoint(float t, int index)
-    {
-        A.position = Vector3.Lerp(p0.position, p1.position, t);
-        B.position = Vector3.Lerp(p1.position, p2.position, t);
-        C.position = Vector3.Lerp(p2.position, p3.position, t);
-        D.position = Vector3.Lerp(A.position, B.position, t);
-        E.position = Vector3.Lerp(B.position, C.position, t);
-        P.position = Vector3.Lerp(D.position, E.position, t);
-
-        curvePointsArray[index] = P.position;
-
-    }
-
+    
     private void CalculateCurve()
     {
         float step = 1.0f / curvePrecision;
@@ -62,35 +40,23 @@ public class Casteljau : MonoBehaviour
 
         T = 0;
     }
-
+    
     private void Update()
     {
         CalculateCurve();
-       //Step();
+        //Step();
     }
 
-    private void Start()
+    private void CalculatePoint(float t, int index)
     {
-        theStep = 0;
-        theIndex = 0;
+        PoVector = p0.position - P.position;
+        P1Vector = p1.position - P.position;
+        P2Vector = p2.position - P.position;
+        P3Vector = p3.position - P.position;
+        
+        
     }
-
-    private void Step()
-    {
-        if (theIndex <= 100)
-        {
-            theStep = 1.0f / curvePrecision;
-            CalculatePoint(T, theIndex);
-            T += theStep;
-            theIndex++;
-        }
-        else
-        {
-            theIndex = 0;
-            T = 0;
-        }
-    }
-
+    
     private void OnDrawGizmos()
     {
         if (drawGizmosEnabled)
