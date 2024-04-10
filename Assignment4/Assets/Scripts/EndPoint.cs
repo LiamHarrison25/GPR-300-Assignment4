@@ -7,9 +7,14 @@ public class EndPoint : MonoBehaviour
 {
     [SerializeField] private Casteljau casteljau;
     [SerializeField] private TestGizmos testGizmos;
-    [SerializeField] private GameObject connectedKnot;
+    //[SerializeField] private GameObject connectedKnot;
+    [SerializeField] private Transform controlPoint;
+    [SerializeField] private Transform connectedControlPoint;
+    //[SerializeField] private Vector3 controlPointDistance;
     [SerializeField] private int num;
     //[SerializeField] private GameObject gameObject;
+
+    public bool isKnot = false;
 
     private bool isInControl = true;
     private bool isInCombinedState = false;
@@ -38,6 +43,21 @@ public class EndPoint : MonoBehaviour
     public int GetNum()
     {
         return num;
+    }
+
+    private void Update()
+    {
+        if (isKnot)
+        {
+            //TODO: Maybe have only one of the control points movable.
+            Vector3 controlPointDistance = transform.position - controlPoint.position;
+            Vector3 connectedControlPointDistance = transform.position - connectedControlPoint.position;
+
+            if (controlPointDistance.magnitude != connectedControlPointDistance.magnitude) //check if the magnitude of the two control points is the same. 
+            {
+                //TODO: Mirror the tangent points
+            }
+        }
     }
 
     // private void CheckPriority(EndPoint endPoint)

@@ -95,6 +95,17 @@ public class Casteljau : MonoBehaviour
     //     rightEndPointAuthority = state;
     // }
 
+    public void CalculateFromSpline(float u, int i) //TODO: Finish
+    {
+        double test = (double)u;
+        if (u > 1)
+        {
+            T = u - MathF.Truncate(u);
+            CalculatePoint(T, i);
+        }
+    }
+    
+
     private void CalculatePoint(float t, int index)
     {
         A.position = Vector3.Lerp(p0.position, p1.position, t);
@@ -105,7 +116,23 @@ public class Casteljau : MonoBehaviour
         P.position = Vector3.Lerp(D.position, E.position, t);
 
         curvePointsArray[index] = P.position;
+        
+        //TODO: Calculate the first derivative. This is the velocity
 
+    }
+
+    private void CalculatePointBezier(float t, int index)
+    {
+        A.position = Vector3.Lerp(p0.position, p1.position, t);
+        B.position = Vector3.Lerp(p1.position, p2.position, t);
+        C.position = Vector3.Lerp(p2.position, p3.position, t);
+        D.position = Vector3.Lerp(A.position, B.position, t);
+        E.position = Vector3.Lerp(B.position, C.position, t);
+        P.position = Vector3.Lerp(D.position, E.position, t);
+
+        curvePointsArray[index] = P.position;
+        
+        //TODO: Calculate the first derivative. This is the velocity
     }
 
     private void CalculateCurve()
@@ -120,6 +147,8 @@ public class Casteljau : MonoBehaviour
 
         T = 0;
     }
+    
+    
 
     private void Update()
     {
