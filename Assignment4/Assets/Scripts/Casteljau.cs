@@ -27,6 +27,21 @@ public class Casteljau : MonoBehaviour
     [SerializeField] private bool drawGizmosEnabled = false;
     [SerializeField] private int stepThroughAmount = 1;
     [SerializeField] private bool enableStepThrough = false;
+
+    [SerializeField] private Color lineColor = Color.green;
+
+    //[SerializeField] private bool leftEndPointAuthority = true;
+    //[SerializeField] private bool rightEndPointAuthority = true;
+    [SerializeField] private bool controllingOtherRight = false;
+    [SerializeField] private bool controllingOtherLeft = false;
+
+    [SerializeField] private EndPoint leftEndPoint;
+    [SerializeField] private EndPoint rightEndPoint;
+
+    [SerializeField] private int idNumber = 0;
+
+    [SerializeField] private GameObject controlledLeftPoint;
+    [SerializeField] private GameObject controlledRightPoint;
     
    
     private Vector3 [] curvePointsArray;
@@ -35,13 +50,50 @@ public class Casteljau : MonoBehaviour
     private float theStep;
     private int theIndex;
 
+    public int GetIdNumber()
+    {
+        return idNumber;
+    }
+
     private void Awake()
     {
         curvePointsArray = new Vector3[curvePrecision];
         drawGizmosEnabled = true;
-        
+
+        // leftEndPoint.SetControlState(controlsLeftEndPoint);
+        // rightEndPoint.SetControlState(controlsRightEndPoint);
+
     }
 
+    // public void SetControlledLeft(GameObject left)
+    // {
+    //     controlledLeftPoint = left;
+    // }
+    //
+    // public void SetControlledRight(GameObject right)
+    // {
+    //     controlledRightPoint = right;
+    // }
+    //
+    // public void SetOtherLeft(bool state)
+    // {
+    //     controllingOtherLeft = state;
+    // }
+    //
+    // public void SetOtherRight(bool state)
+    // {
+    //     controllingOtherRight = state;
+    // }
+
+    // public void SetLeftAuthority(bool state)
+    // {
+    //     leftEndPointAuthority = state;
+    // }
+
+    // public void SetRightAuthority(bool state)
+    // {
+    //     rightEndPointAuthority = state;
+    // }
 
     private void CalculatePoint(float t, int index)
     {
@@ -92,6 +144,16 @@ public class Casteljau : MonoBehaviour
         {
             enableStepThrough = !enableStepThrough;
         }
+
+        if (controllingOtherLeft)
+        {
+            controlledLeftPoint.transform.position = leftEndPoint.transform.position;
+        }
+
+        if (controllingOtherRight)
+        {
+            controlledRightPoint.transform.position = rightEndPoint.transform.position;
+        }
        
     }
 
@@ -125,7 +187,7 @@ public class Casteljau : MonoBehaviour
     {
         if (drawGizmosEnabled)
         {
-            Gizmos.color = Color.green;
+            Gizmos.color = lineColor;
             Vector3 previousPoint = curvePointsArray[0];
             int i;
             for(i = 1; i < curvePrecision; i++)

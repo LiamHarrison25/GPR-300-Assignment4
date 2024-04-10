@@ -24,4 +24,9 @@ public class TestGizmos : MonoBehaviour
             }
         }
     }
+
+    public void ToggleGizmos(bool state)
+    {
+        enableGizmos = state;
+    }
 }
